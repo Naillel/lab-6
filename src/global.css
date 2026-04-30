@@ -1,0 +1,247 @@
+/* ─── Reset & Variables ────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --bg:        #0e0e10;
+    --surface:   #17171a;
+    --border:    #2a2a30;
+    --accent:    #c8f135;
+    --accent-dim:#9ab82a;
+    --danger:    #ff4d6a;
+    --text:      #e8e8ec;
+    --muted:     #6b6b78;
+    --radius:    10px;
+    --font-head: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --transition: 180ms cubic-bezier(.4,0,.2,1);
+}
+
+/* ─── Base ─────────────────────────────────────────────────────────────────── */
+html { font-size: 16px; }
+
+body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 60px 16px;
+}
+
+/* ─── App Container ────────────────────────────────────────────────────────── */
+.app-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 420px;
+    padding: 28px 24px 20px;
+    box-shadow: 0 24px 64px rgba(0,0,0,.5);
+}
+
+/* ─── Header ───────────────────────────────────────────────────────────────── */
+header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+
+h1 {
+    font-family: var(--font-head);
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--text);
+}
+
+.badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--bg);
+    background: var(--accent);
+    padding: 3px 10px;
+    border-radius: 999px;
+    letter-spacing: 0.01em;
+    transition: background var(--transition);
+}
+
+.badge.zero {
+    background: var(--muted);
+    color: var(--surface);
+}
+
+/* ─── Input Group ──────────────────────────────────────────────────────────── */
+.input-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+input[type="text"] {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color var(--transition);
+}
+
+input[type="text"]::placeholder { color: var(--muted); }
+
+input[type="text"]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(200,241,53,.12);
+}
+
+#addBtn {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    background: var(--accent);
+    border: none;
+    border-radius: var(--radius);
+    color: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background var(--transition), transform var(--transition);
+}
+
+#addBtn:hover  { background: var(--accent-dim); }
+#addBtn:active { transform: scale(.94); }
+
+/* ─── Task List ────────────────────────────────────────────────────────────── */
+ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 20px;
+}
+
+li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    animation: slideIn 220ms cubic-bezier(.4,0,.2,1) both;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+li.removing {
+    animation: slideOut 220ms cubic-bezier(.4,0,.2,1) forwards;
+}
+
+@keyframes slideOut {
+    to { opacity: 0; transform: translateX(16px); max-height: 0; padding: 0; margin: 0; overflow: hidden; }
+}
+
+.task-text {
+    flex: 1;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    word-break: break-word;
+    transition: color var(--transition);
+}
+
+li.completed .task-text {
+    text-decoration: line-through;
+    color: var(--muted);
+}
+
+/* ─── Task Action Buttons ──────────────────────────────────────────────────── */
+.task-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.complete-btn,
+.delete-btn {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition), color var(--transition);
+}
+
+.complete-btn {
+    background: transparent;
+    color: var(--muted);
+}
+
+.complete-btn:hover {
+    background: rgba(200,241,53,.15);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+li.completed .complete-btn {
+    background: rgba(200,241,53,.2);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.delete-btn {
+    background: transparent;
+    color: var(--muted);
+}
+
+.delete-btn:hover {
+    background: rgba(255,77,106,.15);
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+/* ─── Footer ───────────────────────────────────────────────────────────────── */
+.footer {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.clear-btn {
+    background: transparent;
+    border: none;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 4px 0;
+    transition: color var(--transition);
+}
+
+.clear-btn:hover { color: var(--danger); }
+
+/* ─── Animación de error en input ──────────────────────────────────────────── */
+@keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(6px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(4px); }
+}
+
+input.shake {
+    border-color: var(--danger) !important;
+    animation: shake 350ms ease;
+}
