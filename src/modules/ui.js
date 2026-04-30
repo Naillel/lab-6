@@ -1,23 +1,12 @@
-// ─── Módulo 3: ui.js ──────────────────────────────────────────────────────────
-// Responsabilidad: renderizar el DOM y manejar eventos.
-// Usa Event Delegation: un único listener en <ul> para TODOS los clicks de lista.
 
 import { TaskService } from './tasks.js';
 
-// ── Referencias al DOM ────────────────────────────────────────────────────────
 const taskInput   = document.querySelector('#taskInput');
 const addBtn      = document.querySelector('#addBtn');
 const taskList    = document.querySelector('#taskList');
 const pendingCount = document.querySelector('#pendingCount');
 const clearBtn    = document.querySelector('#clearBtn');
 
-// ── Helpers de renderizado ────────────────────────────────────────────────────
-
-/**
- * Crea un <li> a partir de un objeto tarea.
- * @param {{ id: string, text: string, completed: boolean }} task
- * @returns {HTMLLIElement}
- */
 const createTaskItem = ({ id, text, completed }) => {
     const li = document.createElement('li');
     li.dataset.id = id;
@@ -41,19 +30,16 @@ const createTaskItem = ({ id, text, completed }) => {
     return li;
 };
 
-/** Escapa caracteres peligrosos para evitar XSS al insertar texto libre. */
 const escapeHtml = str =>
     str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
        .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 
-/** Actualiza el contador de tareas pendientes en el header. */
 const updateCounter = () => {
     const n = TaskService.countPending();
     pendingCount.textContent = `${n} pendiente${n !== 1 ? 's' : ''}`;
     pendingCount.classList.toggle('zero', n === 0);
 };
 
-/** Renderiza desde cero todas las tareas del arreglo. */
 const renderAll = () => {
     taskList.innerHTML = '';
     const fragment = document.createDocumentFragment();
@@ -62,7 +48,6 @@ const renderAll = () => {
     updateCounter();
 };
 
-// ── Acciones ──────────────────────────────────────────────────────────────────
 
 const handleAdd = () => {
     const task = TaskService.add(taskInput.value);
@@ -77,7 +62,6 @@ const handleAdd = () => {
     updateCounter();
 };
 
-// ── Event Delegation: un solo listener en la raíz <ul> ────────────────────────
 taskList.addEventListener('click', e => {
     const btn = e.target.closest('[data-action]');
     if (!btn) return;
@@ -104,7 +88,6 @@ taskList.addEventListener('click', e => {
     }
 });
 
-// ── Otros listeners ───────────────────────────────────────────────────────────
 addBtn.addEventListener('click', handleAdd);
 
 taskInput.addEventListener('keydown', e => {
@@ -128,5 +111,4 @@ clearBtn.addEventListener('click', () => {
     });
 });
 
-// ── Carga inicial ─────────────────────────────────────────────────────────────
 renderAll();
